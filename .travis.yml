@@ -157,7 +157,7 @@ before_script:
   - mkdir build
   - cd build
   - |
-    if [ "$GCOV" == "gcov-5" && "$BUILD_TYPE" == "Debug" ]; then
+    if [[ "$GCOV" == "gcov-5" && "$BUILD_TYPE" == "Debug" ]]; then
       cmake -DCMAKE_CXX_COMPILER=${COMPILER} -DGCOV_BINARY=${GCOV} -DCMAKE_BUILD_TYPE=Debug -DCOVERAGE=true ..;
       lcov --directory include --directory src --directory test --zerocounters
     else
