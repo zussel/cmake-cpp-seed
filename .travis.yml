@@ -1,0 +1,187 @@
+language: cpp
+#sudo: false
+
+matrix:
+  include:
+    # - env: BUILD_TYPE=Debug
+    #   os: osx
+    #   osx_image: xcode8
+    #   compiler: clang
+    # - env: BUILD_TYPE=Release
+    #   os: osx
+    #   osx_image: xcode8
+    #   compiler: clang
+
+    # clang-3.6
+    - env: CLANG_VERSION=3.6 BUILD_TYPE=Debug
+      os: linux
+      addons: &clang36
+        apt:
+          packages:
+            - clang-3.6
+            - g++-5
+          sources:
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-precise-3.6
+
+    - env: CLANG_VERSION=3.6 BUILD_TYPE=Release
+      os: linux
+      addons: *clang36
+
+    # clang-3.7
+    - env: CLANG_VERSION=3.7 BUILD_TYPE=Debug
+      os: linux
+      addons: &clang37
+        apt:
+          packages:
+            - clang-3.7
+            - g++-5
+          sources:
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-precise-3.7
+    - env: CLANG_VERSION=3.7 BUILD_TYPE=Release
+      os: linux
+      addons: *clang37
+
+    # clang-3.8
+    - env: CLANG_VERSION=3.8 BUILD_TYPE=Debug
+      os: linux
+      addons: &clang38
+        apt:
+          packages:
+            - clang-3.8
+            - g++-5
+          sources: &sources
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-precise-3.8
+    - env: CLANG_VERSION=3.8 BUILD_TYPE=Release
+      os: linux
+      addons: *clang38
+
+    # clang-3.9
+#    - env: CLANG_VERSION=3.9 BUILD_TYPE=Debug
+#      os: linux
+#      addons: &clang39
+#        apt:
+#          packages:
+#            - clang-3.9
+#            - g++-5
+#          sources: &sources
+#            - ubuntu-toolchain-r-test
+#            - llvm-toolchain-precise
+#    - env: CLANG_VERSION=3.9 BUILD_TYPE=Release
+#      os: linux
+#      addons: *clang39
+
+    # gcc-4.9
+    - env: GCC_VERSION=4.9 BUILD_TYPE=Debug
+      os: linux
+      addons: &gcc49
+        apt:
+          packages:
+            - cmake
+            - cmake-data
+            - g++-4.9
+          sources:
+            - george-edison55-precise-backports
+            - ubuntu-toolchain-r-test
+
+    - env: GCC_VERSION=4.9 BUILD_TYPE=Release
+      os: linux
+      addons: *gcc49
+
+    # gcc-5
+    - env: GCC_VERSION=5 BUILD_TYPE=Debug
+      os: linux
+      addons: &gcc5
+        apt:
+          packages:
+            - cmake
+            - cmake-data
+            - g++-5
+          sources:
+            - george-edison55-precise-backports
+            - ubuntu-toolchain-r-test
+
+    - env: GCC_VERSION=5 BUILD_TYPE=Release
+      os: linux
+      addons: *gcc5
+
+    # gcc-6
+    - env: GCC_VERSION=6 BUILD_TYPE=Debug
+      os: linux
+      addons: &gcc6
+        apt:
+          packages:
+            - cmake
+            - cmake-data
+            - g++-6
+          sources:
+            - george-edison55-precise-backports
+            - ubuntu-toolchain-r-test
+
+    - env: GCC_VERSION=6 BUILD_TYPE=Release
+      os: linux
+      addons: *gcc6
+  allow_failures:
+    - os: osx
+
+branches:
+  only:
+    - master
+
+before_install:
+  - |
+    if [ -n "$GCC_VERSION" ]; then
+      export CXX="g++-${GCC_VERSION}" CC="gcc-${GCC_VERSION}" GCOV="gcov-${GCC_VERSION}";
+    fi
+  - |
+    if [ -n "$CLANG_VERSION" ]; then
+      export CXX="clang++-${CLANG_VERSION}" CC="clang-${CLANG_VERSION}";
+    fi
+
+install:
+  # install latest LCOV (1.9 was failing)
+  - |
+    if [[ $TRAVIS_OS_NAME != "osx" ]]; then
+      cd ${TRAVIS_BUILD_DIR}
+      wget http://ftp.de.debian.org/debian/pool/main/l/lcov/lcov_1.11.orig.tar.gz
+      tar xf lcov_1.11.orig.tar.gz
+      sudo make -C lcov-1.11/ install
+      gem install coveralls-lcov
+      lcov --version
+    fi
+
+before_script:
+  #- if [[ $TRAVIS_OS_NAME == "osx" ]]; then brew update > /dev/null && brew install mariadb && mysql.server start; fi
+  - mkdir build
+  - cd build
+  - |
+    if [ "$GCOV" == "gcov-5" && "$BUILD_TYPE" == "Debug" ]; then
+      cmake -DCMAKE_CXX_COMPILER=${COMPILER} -DGCOV_BINARY=${GCOV} -DCMAKE_BUILD_TYPE=Debug -DCOVERAGE=true ..;
+      lcov --directory include --directory src --directory test --zerocounters
+    else
+      cmake -DCMAKE_CXX_COMPILER=${COMPILER} -DCMAKE_BUILD_TYPE=Debug ..;
+    fi
+
+script:
+  - make
+  - make test ARGS=-V
+
+after_success:
+  - |
+    if [ "$GCOV" == "gcov-5" ]; then
+      cd ${TRAVIS_BUILD_DIR}
+      type $GCOV
+      lcov --no-external --base-directory ${TRAVIS_BUILD_DIR} --directory build/src --directory build/test --capture --gcov-tool `which $GCOV` --output-file coverage.info
+      lcov --remove coverage.info 'build/test/*' 'build/src/*' --gcov-tool `which $GCOV` --output-file coverage.info
+      lcov --list coverage.info
+      coveralls-lcov --repo-token=${COVERALLS_TOKEN} coverage.info
+    fi
+
+notifications:
+  email:
+    recipients:
+      - sascha.kuehl@gmx.net
+  on_success: change # [always|never|change] # default: change
+  on_failure: always # [always|never|change] # default: always
