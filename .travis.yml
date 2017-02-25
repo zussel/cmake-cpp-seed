@@ -23,6 +23,7 @@ matrix:
             - clang-3.6
             - g++-5
           sources:
+            - george-edison55-precise-backports
             - ubuntu-toolchain-r-test
             - llvm-toolchain-precise-3.6
 
@@ -41,6 +42,7 @@ matrix:
             - clang-3.7
             - g++-5
           sources:
+            - george-edison55-precise-backports
             - ubuntu-toolchain-r-test
             - llvm-toolchain-precise-3.7
     - env: CLANG_VERSION=3.7 BUILD_TYPE=Release
@@ -58,6 +60,7 @@ matrix:
             - clang-3.8
             - g++-5
           sources: &sources
+            - george-edison55-precise-backports
             - ubuntu-toolchain-r-test
             - llvm-toolchain-precise-3.8
     - env: CLANG_VERSION=3.8 BUILD_TYPE=Release
