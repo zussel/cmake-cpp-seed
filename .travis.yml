@@ -190,6 +190,11 @@ after_success:
       lcov --list coverage.info
       coveralls-lcov --repo-token=${COVERALLS_TOKEN} coverage.info
     fi
+  - |
+    if [[ -n $DO_DEPLOY ]]; then
+      cd ${TRAVIS_BUILD_DIR}/build
+      make package
+    fi
 
 deploy:
   provider: releases
