@@ -200,7 +200,7 @@ deploy:
   on:
     tags: true
     condition: "-n $DO_DEPLOY"
-
+    all_branches: true
 
 notifications:
   email:
