@@ -140,6 +140,7 @@ matrix:
 branches:
   only:
     - master
+    - /^\d+\.\d+\.\d+$/
 
 before_install:
   - |
