@@ -193,7 +193,7 @@ after_success:
 
 deploy:
   provider: releases
-  api_key: "GITHUB OAUTH TOKEN"
+  api_key: "GITHUB TOKEN"
   file_glob: true
   file:
     - Package/*.tar.gz
