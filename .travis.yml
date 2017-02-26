@@ -119,7 +119,7 @@ matrix:
       addons: *gcc5
 
     # gcc-6
-    - env: GCC_VERSION=6 BUILD_TYPE=Debug
+    - env: GCC_VERSION=6 BUILD_TYPE=Debug DO_DEPLOY=True
       os: linux
       addons: &gcc6
         apt:
@@ -189,6 +189,18 @@ after_success:
       lcov --list coverage.info
       coveralls-lcov --repo-token=${COVERALLS_TOKEN} coverage.info
     fi
+
+deploy:
+  provider: releases
+  api_key: "GITHUB OAUTH TOKEN"
+  file_glob: true
+  file:
+    - Package/*.tar.gz
+  skip_cleanup: true
+  on:
+    tags: true
+    condition: "-n $DO_DEPLOY"
+
 
 notifications:
   email:
