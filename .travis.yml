@@ -193,7 +193,8 @@ after_success:
 
 deploy:
   provider: releases
-  api_key: "GITHUB TOKEN"
+  api_key:
+    secure: "xfjHf0E/pbe7Lw67xU8b1ldPUTB2cVFF00rF350+46iSpcYYLhVZ+GAGK8NHAwq4lgHlLM9zidgRmvgG3MimxEMa96nT4EBMSnqyRIHaaeEMJWjU7EdMj4FUXnRIw7JGsM3KEAJg0QCpykWz1g11afK4XZVqcwpb+OIYj1qkpP5NPaD/6qF0u2WCsjTqQp8s0ZjCusu2xN9EMJIHmooRjGkTm4bMWVi2QMmiyaPjEyq4vbgagNnNOExhmg0VZcZAc6O+yDqfGW6wBqVBe0XB2HDNVTQ18UrA23kQCF9owddl4iUUgz21ZcUUCm/5R62xs4qZ5bxEheVZQqEA91f7tlLWhrQC6FFUIibWYErgE/YegA6+G5H+ztROK01eZvS1qqRjgT9dTSFPZqyweVtFBlazz+bPwUrI4ejv9cPc0Le3JEGKMkW1tJhNzTw/AHkIp2ThDpgHScZgLdCef3zyCBMk+a1ukezCioJyoleGkrOQguwD3MR5GH34TUBULU4EOZDrqdCOT+I666u84Px+m/L03SOcR36HFQcjyGYqBLqSJYesl18JWhO0BQGsk5k28pOnqSnQDwkakSEzSAU214lqb1eA8riy4MMmJOMT+4qNGb9qWzlx0Q46bBjexgus4GFmnRaxhoKbGP+FDDPXR+bMOKFJL/BA+B5YiPhewVQ="
   file_glob: true
   file:
     - Package/*.tar.gz
