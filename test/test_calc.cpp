@@ -21,9 +21,6 @@ int main (int, char *[])
     res = calc.divide(20, 0);
   } catch(logic_error &) {
     // correct exception was caught
-  } catch(exception &) {
-    // unexpected exception was caught
-    return 1;
   }
 
   res = calc.multiply(5, res);
