@@ -60,7 +60,7 @@ before_deploy:
 
 deploy:
   provider: GitHub
-  auth_token: "9fde4e828b7903f5ea51f682e3030c8739e97166"
+  auth_token: "Z2RzbgchEqBdheNCVC9oldRyap1Uxhdy5bYYwcsIHZ/ozp4HlSTupJLDnd+4SCVX"
   artifact: Package\*.exe
   draft: false
   prerelease: false
