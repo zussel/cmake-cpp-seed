@@ -46,7 +46,7 @@ build_script:
 
 test_script:
   - ps: >-
-      if ( %configuration% -Match "Debug" ) {
+      if ( $env:configuration -Match "Debug" ) {
         ctest --verbose -E perftest --build-config %configuration%
       } else {
         ctest --verbose --build-config %configuration%
