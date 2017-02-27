@@ -61,7 +61,7 @@ before_deploy:
 deploy:
   provider: GitHub
   auth_token:
-    secure: "Z2RzbgchEqBdheNCVC9oldRyap1Uxhdy5bYYwcsIHZ/ozp4HlSTupJLDnd+4SCVX"
+    secure: "kz/25t/c0oeOJ3Ux3r+Sy5F4G7YgPmjSrTpgZ73IQDY4N9mYNqH4kAv4+0I0oeh6"
   artifact: Package\*.exe
   draft: false
   prerelease: false
