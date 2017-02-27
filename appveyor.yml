@@ -45,7 +45,7 @@ build_script:
 #  project: C:\projects\oos\build\oos.sln
 
 test_script:
-  - ctest --verbose --build-config %configuration%
+  - ctest --verbose
 #  - ps: >-
 #      if ( $env:configuration -Match "Debug" ) {
 #        ctest --verbose -E perftest --build-config %configuration%
