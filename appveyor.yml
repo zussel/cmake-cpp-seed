@@ -46,8 +46,8 @@ build_script:
 
 test_script:
   - ps: >-
-      if (%CONFIGURATION%==Debug) {
-        ctest --verbose -E perftest --build-config %CONFIGURATION%
+      if ( %configuration% -Match "Debug" ) {
+        ctest --verbose -E perftest --build-config %configuration%
       } else {
-        ctest --verbose --build-config %CONFIGURATION%
+        ctest --verbose --build-config %configuration%
       }
