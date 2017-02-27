@@ -58,13 +58,10 @@ before_deploy:
   # create NSIS installer
   - cpack -G NSIS -C %configuration%
 
-artifacts:
-- path: Package\*.exe
-
 deploy:
   provider: GitHub
-  auth_token:
-    secure: "9fde4e828b7903f5ea51f682e3030c8739e97166"
+  auth_token: "9fde4e828b7903f5ea51f682e3030c8739e97166"
+  artifact: Package\*.exe
   draft: false
   prerelease: false
   on:
