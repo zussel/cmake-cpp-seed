@@ -137,7 +137,7 @@ matrix:
             - george-edison55-precise-backports
             - ubuntu-toolchain-r-test
 
-    - env: GCC_VERSION=6 BUILD_TYPE=Release DO_COVERITY_SCAN=True
+    - env: GCC_VERSION=6 BUILD_TYPE=Release
       os: linux
       addons: *gcc6
   allow_failures:
@@ -146,7 +146,6 @@ matrix:
 branches:
   only:
     - master
-    - coverity_scan
     - /^\d+\.\d+\.\d+$/
 
 before_install:
@@ -158,7 +157,6 @@ before_install:
     if [ -n "$CLANG_VERSION" ]; then
       export CXX="clang++-${CLANG_VERSION}" CC="clang-${CLANG_VERSION}";
     fi
-  - echo -n | openssl s_client -connect scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
 
 
 install:
@@ -178,7 +176,7 @@ before_script:
   - mkdir build
   - cd build
   - |
-    if [[ "$GCOV" == "gcov-5" && "$BUILD_TYPE" == "Debug" && $TRAVIS_BRANCH != "coverity_can" ]]; then
+    if [[ "$GCOV" == "gcov-5" && "$BUILD_TYPE" == "Debug" ]]; then
       cmake -DCMAKE_CXX_COMPILER=${COMPILER} -DGCOV_BINARY=${GCOV} -DCMAKE_BUILD_TYPE=Debug -DCOVERAGE=true ..;
       lcov --directory include --directory src --directory test --zerocounters
     else
@@ -187,14 +185,12 @@ before_script:
 
 script:
   - |
-    if [[ ($TRAVIS_BRANCH == "coverity_scan" && -n $DO_COVERITY_SCAN) || $TRAVIS_BRANCH != "coverity_scan" ]]; then
       make
       make test ARGS=-V
-    fi
 
 after_success:
   - |
-    if [[ $GCOV == "gcov-5" && "$BUILD_TYPE" == "Debug" && $TRAVIS_BRANCH != "coverity_can" ]]; then
+    if [[ $GCOV == "gcov-5" && "$BUILD_TYPE" == "Debug" ]]; then
       cd ${TRAVIS_BUILD_DIR}
       type $GCOV
       lcov --no-external --base-directory ${TRAVIS_BUILD_DIR} --directory build/src --directory build/test --capture --gcov-tool `which $GCOV` --output-file coverage.info
@@ -223,16 +219,6 @@ deploy:
     tags: true
     condition: "-n $DO_DEPLOY"
     all_branches: true
-
-addons:
-  coverity_scan:
-    project:
-      name: "zussel/cmake-cpp-seed"
-      description: "Build submitted via Travis CI"
-    notification_email: sascha.kuehl@gmx.net
-    build_command_prepend: "mkdir build; cd build; cmake -DCMAKE_BUILD_TYPE=$BUILD_TYPE .."
-    build_command:  "make -j 4"
-    branch_pattern: coverity_scan
 
 notifications:
   email:
