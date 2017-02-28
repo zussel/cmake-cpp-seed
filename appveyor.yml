@@ -64,8 +64,8 @@ after_build:
   # create NSIS installer
  # - cpack -G NSIS -C %configuration%
 
-artifacts:
-  - path: Package/calc*.exe
+#artifacts:
+#  - path: Package/calc*.exe
 
 deploy:
   provider: GitHub
