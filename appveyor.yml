@@ -55,7 +55,8 @@ test_script:
 #      }
 
 after_build:
-  - if "%APPVEYOR_REPO_TAG%"=="true" && %configuration% == "Release" (cpack -G NSIS -C %configuration%)
+  - cmd: |
+	if "%APPVEYOR_REPO_TAG%"=="true" (if %configuration%=="Release" (cpack -G NSIS -C %configuration%))
 
 #before_deploy:
   # create NSIS installer
