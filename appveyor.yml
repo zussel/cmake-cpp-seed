@@ -71,7 +71,7 @@ deploy:
   provider: GitHub
   auth_token:
     secure: "kz/25t/c0oeOJ3Ux3r+Sy5F4G7YgPmjSrTpgZ73IQDY4N9mYNqH4kAv4+0I0oeh6"
-  artifact: /calc.*\.exe/
+  artifact: /Packaege\/calc.*\.exe/
   draft: false
   prerelease: false
   on:
