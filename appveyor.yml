@@ -55,8 +55,8 @@ test_script:
 #      }
 
 after_build:
-  - ps: >-
-    if (($env:APPVEYOR_REPO_TAG -Match "true") -and ($env:configuration -Match "Release") {
+  - ps: |
+    if (($env:APPVEYOR_REPO_TAG -Match "true") -and ($env:configuration -Match "Release")) {
       cpack -G NSIS -C Release
     }
 
