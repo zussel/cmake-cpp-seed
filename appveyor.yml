@@ -54,16 +54,23 @@ test_script:
 #        ctest --verbose --build-config %configuration%
 #      }
 
-before_deploy:
+after_build:
+  - if "%APPVEYOR_REPO_TAG%"=="true" && %configuration% == "Release" (cpack -G NSIS -C %configuration%)
+
+#before_deploy:
   # create NSIS installer
-  - cpack -G NSIS -C %configuration%
+ # - cpack -G NSIS -C %configuration%
+
+artifacts:
+  - path: Package/calc*.exe
 
 deploy:
   provider: GitHub
   auth_token:
     secure: "kz/25t/c0oeOJ3Ux3r+Sy5F4G7YgPmjSrTpgZ73IQDY4N9mYNqH4kAv4+0I0oeh6"
-  artifact: Package\*.exe
+  artifact: /calc.*\.exe/
   draft: false
   prerelease: false
   on:
+    branch: master
     appveyor_repo_tag: true
