@@ -40,7 +40,7 @@ before_build:
   - cmake -G "Visual Studio %VS_VERSION%" -DCMAKE_GENERATOR_PLATFORM=%PLATFORM% -DCMAKE_BUILD_TYPE=%configuration% ..
 
 build_script:
-  - cmake --build . --config %CMAKE_BUILD_TYPE%
+  - cmake --build . --config %configuration%
 
 #build:
 #  project: C:\projects\oos\build\oos.sln
