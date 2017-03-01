@@ -6,63 +6,36 @@ version: "{build}"
 
 image: Visual Studio 2015
 
-platform:
-  - Win32
-  - x64
-
 configuration:
   - Debug
   - Release
 
 environment:
-#  MYSQL_DIR: C:\Program Files\MySql\MySQL Server 5.7
-  VS_VERSION: 14 2015
-#  matrix:
-#  - VS_VERSION: 14 2015
-#    VS_PLATFORM: x86
-#    MYSQL_DIR: C:\Program Files\MySql\MySQL Server 5.7
-#  - VS_VERSION: 14 2015
-#    VS_PLATFORM: x64
-#    MYSQL_DIR: C:\Program Files\MySql\MySQL Server 5.7
+  matrix:
+  - VS_VERSION: Visual Studio 14 2015
+  - VS_VERSION: Visual Studio 14 2015 Win64
 
 branches:
   only:
     - master
     - /^\d+\.\d+\.\d+$/
 
-install:
-#  - git clone https://github.com/snikulov/sqlite.cmake.build.git C:\projects\sqlite\src
-#  - cinst: nsis
-
 before_build:
   - mkdir build
   - cd build
-  - cmake -G "Visual Studio %VS_VERSION%" -DCMAKE_GENERATOR_PLATFORM=%PLATFORM% -DCMAKE_BUILD_TYPE=%configuration% ..
+  - cmake -G "%VS_VERSION%" -DCMAKE_BUILD_TYPE=%configuration% ..
 
 build_script:
   - cmake --build . --config %configuration%
 
-#build:
-#  project: C:\projects\oos\build\oos.sln
-
 test_script:
   - ctest --verbose
-#  - ps: >-
-#      if ( $env:configuration -Match "Debug" ) {
-#        ctest --verbose -E perftest --build-config %configuration%
-#      } else {
-#        ctest --verbose --build-config %configuration%
-#      }
 
 after_build:
   - ps: |
       if (($env:APPVEYOR_REPO_TAG -Match "true") -and ($env:configuration -Match "Release")) {
         cpack -G NSIS -C Release
       }
-
-#before_deploy:
-  # create NSIS installer
- # - cpack -G NSIS -C %configuration%
 
 artifacts:
   - path: Package/calc*.exe
