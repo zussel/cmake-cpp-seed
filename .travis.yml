@@ -125,7 +125,7 @@ matrix:
 #      addons: *gcc5
 
     # gcc-6
-    - env: GCC_VERSION=6 BUILD_TYPE=Debug DO_DEPLOY=True
+    - env: GCC_VERSION=6 BUILD_TYPE=Debug
       os: linux
       addons: &gcc6
         apt:
@@ -137,7 +137,7 @@ matrix:
             - george-edison55-precise-backports
             - ubuntu-toolchain-r-test
 
-    - env: GCC_VERSION=6 BUILD_TYPE=Release
+    - env: GCC_VERSION=6 BUILD_TYPE=Release DO_DEPLOY=True
       os: linux
       addons: *gcc6
   allow_failures:
