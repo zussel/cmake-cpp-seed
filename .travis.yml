@@ -125,7 +125,7 @@ matrix:
 #      addons: *gcc5
 
     # gcc-6
-    - env: GCC_VERSION=6 BUILD_TYPE=Debug
+    - env: GCC_VERSION=6 BUILD_TYPE=Debug ARCH=32
       os: linux
       addons: &gcc6
         apt:
@@ -137,7 +137,13 @@ matrix:
             - george-edison55-precise-backports
             - ubuntu-toolchain-r-test
 
-    - env: GCC_VERSION=6 BUILD_TYPE=Release DO_DEPLOY=True
+    - env: GCC_VERSION=6 BUILD_TYPE=Release ARCH=32 DO_DEPLOY=True
+      os: linux
+      addons: *gcc6
+    - env: GCC_VERSION=6 BUILD_TYPE=Debug ARCH=64
+      os: linux
+      addons: *gcc6
+    - env: GCC_VERSION=6 BUILD_TYPE=Release ARCH=64 DO_DEPLOY=True
       os: linux
       addons: *gcc6
   allow_failures:
@@ -201,7 +207,12 @@ after_success:
 
 before_deploy:
   - cd ${TRAVIS_BUILD_DIR}
-  - cmake --build build --target package
+  - |
+    if [[ $TRAVIS_OS_NAME == "linux" ]]; then
+      cmake --build build --target package
+    else
+      cmake --build build --target package
+    fi
   - export RELEASE_PKG_FILE=$(ls Package/*.tar.gz)
   - echo "deploying $RELEASE_PKG_FILE to GitHub releases"
 
