@@ -12,24 +12,46 @@ matrix:
     #   osx_image: xcode8
     #   compiler: clang
 
-    # clang-3.6
-#    - env: CLANG_VERSION=3.6 BUILD_TYPE=Debug
-#      os: linux
-#      addons: &clang36
-#        apt:
-#          packages:
-#            - cmake
-#            - cmake-data
-#            - clang-3.6
-#            - g++-5
-#          sources:
-#            - george-edison55-precise-backports
-#            - ubuntu-toolchain-r-test
-#            - llvm-toolchain-precise-3.6
-#
-#    - env: CLANG_VERSION=3.6 BUILD_TYPE=Release
-#      os: linux
-#      addons: *clang36
+    # clang-3.6 32
+    - env: CLANG_VERSION=3.6 BUILD_TYPE=Debug ARCH=32
+      os: linux
+      addons: &clang36-32
+        apt:
+          packages:
+            - cmake
+            - cmake-data
+            - clang-3.6
+            - linux-libc-dev:i386
+            - g++-multilib
+            - gcc-multilib
+          sources:
+            - george-edison55-precise-backports
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-precise-3.6
+
+    - env: CLANG_VERSION=3.6 BUILD_TYPE=Release ARCH=32
+      os: linux
+      addons: *clang36-32
+
+    # clang-3.6 64
+    - env: CLANG_VERSION=3.6 BUILD_TYPE=Debug ARCH=64
+      os: linux
+      addons: &clang36-64
+        apt:
+          packages:
+            - cmake
+            - cmake-data
+            - clang-3.6
+            - g++
+            - gcc
+          sources:
+            - george-edison55-precise-backports
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-precise-3.6
+
+    - env: CLANG_VERSION=3.6 BUILD_TYPE=Release ARCH=64
+      os: linux
+      addons: *clang36-64
 
     # clang-3.7
 #    - env: CLANG_VERSION=3.7 BUILD_TYPE=Debug
@@ -84,59 +106,95 @@ matrix:
 #      os: linux
 #      addons: *clang39
 
-    # gcc-4.9
-#    - env: GCC_VERSION=4.9 BUILD_TYPE=Debug
+    # gcc-4.9 32
+#    - env: GCC_VERSION=4.9 BUILD_TYPE=Debug ARCH=32
 #      os: linux
-#      addons: &gcc49
+#      addons: &gcc4.9-32
+#        apt:
+#          packages:
+#            - cmake
+#            - cmake-data
+#            - linux-libc-dev:i386
+#            - g++-4.9-multilib
+#            - gcc-4.9-multilib
+#          sources:
+#            - george-edison55-precise-backports
+#            - ubuntu-toolchain-r-test
+#    - env: GCC_VERSION=4.9 BUILD_TYPE=Release ARCH=32
+#      os: linux
+#      addons: *gcc4.9-32
+#
+#    # gcc-4.9 64
+#    - env: GCC_VERSION=4.9 BUILD_TYPE=Debug ARCH=64
+#      os: linux
+#      addons: &gcc4.9-64
 #        apt:
 #          packages:
 #            - cmake
 #            - cmake-data
 #            - g++-4.9
+#            - gcc-4.9
 #          sources:
 #            - george-edison55-precise-backports
 #            - ubuntu-toolchain-r-test
+#    - env: GCC_VERSION=6 BUILD_TYPE=Release ARCH=64
+#      os: linux
+#      addons: *gcc4.9-64
 #
-#    - env: GCC_VERSION=4.9 BUILD_TYPE=Release
+#    # gcc-5 32
+#    - env: GCC_VERSION=5 BUILD_TYPE=Debug ARCH=32
 #      os: linux
-#      addons: *gcc49
-
-    # gcc-5
-#    - env: GCC_VERSION=5 BUILD_TYPE=Debug
+#      addons: &gcc5-32
+#        apt:
+#          packages:
+#            - cmake
+#            - cmake-data
+#            - linux-libc-dev:i386
+#            - g++-5-multilib
+#            - gcc-5-multilib
+#          sources:
+#            - george-edison55-precise-backports
+#            - ubuntu-toolchain-r-test
+#    - env: GCC_VERSION=5 BUILD_TYPE=Release ARCH=32
 #      os: linux
-#      addons: &gcc5
+#      addons: *gcc5-32
+#
+#    # gcc-5 64
+#    - env: GCC_VERSION=5 BUILD_TYPE=Debug ARCH=64
+#      os: linux
+#      addons: &gcc5-64
 #        apt:
 #          packages:
 #            - cmake
 #            - cmake-data
 #            - g++-5
+#            - gcc-5
 #          sources:
 #            - george-edison55-precise-backports
 #            - ubuntu-toolchain-r-test
-#
-#    - env: GCC_VERSION=5 BUILD_TYPE=Release
+#    - env: GCC_VERSION=6 BUILD_TYPE=Release ARCH=64
 #      os: linux
-#      addons: *gcc5
-
-    # gcc-6 32
-    - env: GCC_VERSION=6 BUILD_TYPE=Debug ARCH=32
-      os: linux
-      addons: &gcc6-32
-        apt:
-          packages:
-            - cmake
-            - cmake-data
-            - linux-libc-dev:i386
-            - g++-6-multilib
-            - gcc-6-multilib
-          sources:
-            - george-edison55-precise-backports
-            - ubuntu-toolchain-r-test
+#      addons: *gcc5-64
+#
+#    # gcc-6 32
+#    - env: GCC_VERSION=6 BUILD_TYPE=Debug ARCH=32
+#      os: linux
+#      addons: &gcc6-32
+#        apt:
+#          packages:
+#            - cmake
+#            - cmake-data
+#            - linux-libc-dev:i386
+#            - g++-6-multilib
+#            - gcc-6-multilib
+#          sources:
+#            - george-edison55-precise-backports
+#            - ubuntu-toolchain-r-test
 #    - env: GCC_VERSION=6 BUILD_TYPE=Release ARCH=32
 #      os: linux
 #      addons: *gcc6-32
-
-    # gcc-6 64
+#
+#    # gcc-6 64
 #    - env: GCC_VERSION=6 BUILD_TYPE=Debug ARCH=64
 #      os: linux
 #      addons: &gcc6-64
@@ -223,8 +281,7 @@ deploy:
 #  api_key:
 #    secure: "xfjHf0E/pbe7Lw67xU8b1ldPUTB2cVFF00rF350+46iSpcYYLhVZ+GAGK8NHAwq4lgHlLM9zidgRmvgG3MimxEMa96nT4EBMSnqyRIHaaeEMJWjU7EdMj4FUXnRIw7JGsM3KEAJg0QCpykWz1g11afK4XZVqcwpb+OIYj1qkpP5NPaD/6qF0u2WCsjTqQp8s0ZjCusu2xN9EMJIHmooRjGkTm4bMWVi2QMmiyaPjEyq4vbgagNnNOExhmg0VZcZAc6O+yDqfGW6wBqVBe0XB2HDNVTQ18UrA23kQCF9owddl4iUUgz21ZcUUCm/5R62xs4qZ5bxEheVZQqEA91f7tlLWhrQC6FFUIibWYErgE/YegA6+G5H+ztROK01eZvS1qqRjgT9dTSFPZqyweVtFBlazz+bPwUrI4ejv9cPc0Le3JEGKMkW1tJhNzTw/AHkIp2ThDpgHScZgLdCef3zyCBMk+a1ukezCioJyoleGkrOQguwD3MR5GH34TUBULU4EOZDrqdCOT+I666u84Px+m/L03SOcR36HFQcjyGYqBLqSJYesl18JWhO0BQGsk5k28pOnqSnQDwkakSEzSAU214lqb1eA8riy4MMmJOMT+4qNGb9qWzlx0Q46bBjexgus4GFmnRaxhoKbGP+FDDPXR+bMOKFJL/BA+B5YiPhewVQ="
   file_glob: true
-  file:
-    - "${RELEASE_PKG_FILE}"
+  file: "${RELEASE_PKG_FILE}"
   skip_cleanup: true
   on:
 #    repo: zussel/cmake-cpp-seed
@@ -236,5 +293,3 @@ notifications:
   email:
     recipients:
       - sascha.kuehl@gmx.net
-  on_success: change # [always|never|change] # default: change
-  on_failure: always # [always|never|change] # default: always
