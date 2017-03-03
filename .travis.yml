@@ -133,6 +133,9 @@ matrix:
             - cmake
             - cmake-data
             - g++-6
+            - gcc-6
+            - g++-6-multilib
+            - gcc-6-multilib
           sources:
             - george-edison55-precise-backports
             - ubuntu-toolchain-r-test
@@ -182,7 +185,6 @@ before_script:
   - mkdir build
   - cd build
   - |
-    echo "compiler: ${COMPILER}"
     if [[ "$GCOV" == "gcov-5" && "$BUILD_TYPE" == "Debug" ]]; then
       cmake -DCMAKE_CXX_COMPILER=${COMPILER} -DARCH=${ARCH} -DGCOV_BINARY=${GCOV} -DCMAKE_BUILD_TYPE=Debug -DCOVERAGE=true ..;
       lcov --directory include --directory src --directory test --zerocounters
