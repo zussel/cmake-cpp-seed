@@ -136,7 +136,7 @@ matrix:
             - gcc-6
             - g++-6-multilib
             - gcc-6-multilib
-            - libc6-dbg:i386
+            - linux-libc-dev:i386
           sources:
             - george-edison55-precise-backports
             - ubuntu-toolchain-r-test
