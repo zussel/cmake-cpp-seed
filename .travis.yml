@@ -1,15 +1,6 @@
 language: cpp
 #sudo: false
 
-addons:
-  apt:
-    packages:
-      - cmake
-      - cmake-data
-      - linux-libc-dev:i386
-    sources:
-      - george-edison55-precise-backports
-
 matrix:
   include:
     # - env: BUILD_TYPE=Debug
@@ -127,35 +118,40 @@ matrix:
 #      os: linux
 #      addons: *gcc5
 
-    # gcc-6
+    # gcc-6 32
     - env: GCC_VERSION=6 BUILD_TYPE=Debug ARCH=32
       os: linux
       addons: &gcc6-32
         apt:
           packages:
+            - cmake
+            - cmake-data
+            - linux-libc-dev:i386
             - g++-6-multilib
             - gcc-6-multilib
           sources:
+            - george-edison55-precise-backports
             - ubuntu-toolchain-r-test
+#    - env: GCC_VERSION=6 BUILD_TYPE=Release ARCH=32
+#      os: linux
+#      addons: *gcc6-32
 
-    - env: GCC_VERSION=6 BUILD_TYPE=Release ARCH=32
-      os: linux
-      addons: *gcc6-32
-    - env: GCC_VERSION=6 BUILD_TYPE=Debug ARCH=64
-      os: linux
-      addons: &gcc6-64
-        apt:
-          packages:
-            - g++-6
-            - gcc-6
-          sources:
-            - ubuntu-toolchain-r-test
+    # gcc-6 64
 #    - env: GCC_VERSION=6 BUILD_TYPE=Debug ARCH=64
 #      os: linux
-#      addons: *gcc6
-    - env: GCC_VERSION=6 BUILD_TYPE=Release ARCH=64
-      os: linux
-      addons: *gcc6-64
+#      addons: &gcc6-64
+#        apt:
+#          packages:
+#            - cmake
+#            - cmake-data
+#            - g++-6
+#            - gcc-6
+#          sources:
+#            - george-edison55-precise-backports
+#            - ubuntu-toolchain-r-test
+#    - env: GCC_VERSION=6 BUILD_TYPE=Release ARCH=64
+#      os: linux
+#      addons: *gcc6-64
   allow_failures:
     - os: osx
 
