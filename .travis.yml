@@ -1,11 +1,14 @@
 language: cpp
 #sudo: false
 
-env:
-  global:
-   # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
-   # via the "travis encrypt" command using the project repo's public key
-   - secure: "YJUngdwFFjYT7wRGNZz+tGTcDFZef/vjyw90gku4WlwhUyL+lJCD6U2z1FVIURfTYI3U2XnyoNgnUaWmPzAaol+f3FBhJ4MWmPTF4n3WG0hSgFVeY2ULxxwLGlVOUMJQukw4BbtrSSiui4qzEI58qT/k7O7cIHxeF6HgCZB4kgCAfNR8bnkZXTI+Zsay5e3Bo7Wnz0y1eTJksauJ7gKwZwJhlxzo0S1AljAZi+iHR0iqd/zfqXoLsfZSjOl2W6zuLwUI+WHfoG2mu8771w/0LJFGGEqwcwwjPbhYjnNctqVvmlWLLreYDFu4PaI8w256DrZbJK079q5VBsHjCAT05daJthHNKt2kqCfcEGWsVfOlzCNF7NtcdhzuVJO4L8yNoUMgdhL04pyXnbM2WqVxX87ewloBinGTqCTC1d9z1nLFi1+6QypaOH+Q7UuiTtbqcYpd0pfpZD+l7kuumwqI65n6kqCUvCaVAytlu0tUtppKgL23L4ztA/wNYqnDAs46eDt7w16IA8RfQ2zqptHgl9BH6+pV2Ose/0n07RE9NAm2Et7j/H3jzMTtHt2W2nFtXqd6Q4X0lNeAzqLOV3p0JSlwy5sPv2Gm6AFozME1Np/MmCSTCq10OR4pDF3frDCMLCn1KkItaoIfk+cnU6roCsv5e1vIyppGCnW1KqaemAs="
+addons:
+  apt:
+    packages:
+      - cmake
+      - cmake-data
+      - linux-libc-dev:i386
+    sources:
+      - george-edison55-precise-backports
 
 matrix:
   include:
@@ -127,29 +130,32 @@ matrix:
     # gcc-6
     - env: GCC_VERSION=6 BUILD_TYPE=Debug ARCH=32
       os: linux
-      addons: &gcc6
+      addons: &gcc6-32
         apt:
           packages:
-            - cmake
-            - cmake-data
-            - g++-6
-            - gcc-6
             - g++-6-multilib
             - gcc-6-multilib
-            - linux-libc-dev:i386
           sources:
-            - george-edison55-precise-backports
             - ubuntu-toolchain-r-test
 
-    - env: GCC_VERSION=6 BUILD_TYPE=Release ARCH=32 DO_DEPLOY=True
+    - env: GCC_VERSION=6 BUILD_TYPE=Release ARCH=32
       os: linux
-      addons: *gcc6
+      addons: *gcc6-32
     - env: GCC_VERSION=6 BUILD_TYPE=Debug ARCH=64
       os: linux
-      addons: *gcc6
-    - env: GCC_VERSION=6 BUILD_TYPE=Release ARCH=64 DO_DEPLOY=True
+      addons: &gcc6-64
+        apt:
+          packages:
+            - g++-6
+            - gcc-6
+          sources:
+            - ubuntu-toolchain-r-test
+#    - env: GCC_VERSION=6 BUILD_TYPE=Debug ARCH=64
+#      os: linux
+#      addons: *gcc6
+    - env: GCC_VERSION=6 BUILD_TYPE=Release ARCH=64
       os: linux
-      addons: *gcc6
+      addons: *gcc6-64
   allow_failures:
     - os: osx
 
@@ -227,7 +233,7 @@ deploy:
   on:
 #    repo: zussel/cmake-cpp-seed
     tags: true
-    condition: "-n $DO_DEPLOY"
+    condition: "GCC_VERSION == 6 && BUILD_TYPE = Release"
     all_branches: true
 
 notifications:
