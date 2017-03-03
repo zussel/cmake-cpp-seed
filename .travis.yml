@@ -181,6 +181,7 @@ before_script:
   #- if [[ $TRAVIS_OS_NAME == "osx" ]]; then brew update > /dev/null && brew install mariadb && mysql.server start; fi
   - mkdir build
   - cd build
+  - echo compiler: ${COMPILER}
   - |
     if [[ "$GCOV" == "gcov-5" && "$BUILD_TYPE" == "Debug" ]]; then
       cmake -DCMAKE_CXX_COMPILER=${COMPILER} -DARCH=${ARCH} -DGCOV_BINARY=${GCOV} -DCMAKE_BUILD_TYPE=Debug -DCOVERAGE=true ..;
