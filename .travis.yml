@@ -219,7 +219,7 @@ matrix:
           sources:
             - george-edison55-precise-backports
             - ubuntu-toolchain-r-test
-    - env: GCC_VERSION=6 BUILD_TYPE=Release ARCH=64
+    - env: GCC_VERSION=5 BUILD_TYPE=Release ARCH=64
       os: linux
       addons: *gcc5-64
 
