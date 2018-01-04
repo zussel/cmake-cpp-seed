@@ -321,7 +321,7 @@ after_success:
 before_deploy:
   - cd ${TRAVIS_BUILD_DIR}
   - cmake --build build --target package
-  - export RELEASE_PKG_FILE=$(ls Package/*.tar.gz)
+  - export RELEASE_PKG_FILE=$(ls Package/*.tar.gz Package/*.deb Package/*.rpm)
   - echo "deploying $RELEASE_PKG_FILE to GitHub releases"
 
 deploy:
