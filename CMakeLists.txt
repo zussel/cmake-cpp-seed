@@ -136,6 +136,19 @@ ADD_SUBDIRECTORY(test)
 #   COMPONENT doc
 # )
 
+add_custom_target(archpkg
+  COMMAND ${CMAKE_COMMAND}
+    -D NAME=${PROJECT_NAME}
+    -D URL=https://github.com/zussel/cmake-cpp-seed
+    -D DESC=${PROJECT_NAME_UPPER}
+    -D VERSION=${APP_VERSION}
+    -D SRC_DIR=${PROJECT_SOURCE_DIR}
+    -D ARCH=${CMAKE_SYSTEM_PROCESSOR}
+    -D VERSION_INCLUDE_DIR=calc
+    -D VERSION_FILE=version.hpp
+    -P ${CMAKE_MODULE_PATH}/CreateArchLinuxPackage.cmake
+)
+
 # Basic CPack configuration
 SET(CPACK_PACKAGE_NAME ${CMAKE_PROJECT_NAME})
 SET(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Project Description")
