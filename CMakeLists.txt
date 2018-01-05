@@ -136,6 +136,15 @@ ADD_SUBDIRECTORY(test)
 #   COMPONENT doc
 # )
 
+set(ARCHPKG_ARCH ${CMAKE_SYSTEM_PROCESSOR})
+if (${ARCH} MATCHES "32")
+  set(ARCHPKG_ARCH "x86")
+elseif(${ARCH} MATCHES "64")
+  set(CPACK_SYSTEM_NAME "x86_64")
+else()
+  set(ARCHPKG_ARCH ${CMAKE_SYSTEM_PROCESSOR})
+endif()
+
 add_custom_target(archpkg
   COMMAND ${CMAKE_COMMAND}
     -D NAME=${PROJECT_NAME}
@@ -143,7 +152,7 @@ add_custom_target(archpkg
     -D DESC=${PROJECT_NAME_UPPER}
     -D VERSION=${APP_VERSION}
     -D SRC_DIR=${PROJECT_SOURCE_DIR}
-    -D ARCH=${CMAKE_SYSTEM_PROCESSOR}
+    -D ARCH=${ARCHPKG_ARCH}
     -D VERSION_INCLUDE_DIR=calc
     -D VERSION_FILE=version.hpp
     -P ${CMAKE_MODULE_PATH}/CreateArchLinuxPackage.cmake
