@@ -29,7 +29,7 @@ build_script:
   - cmake --build . --config %configuration%
 
 test_script:
-  - ctest --verbose
+  - make check
 
 after_build:
   - ps: |

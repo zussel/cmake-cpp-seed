@@ -305,7 +305,7 @@ before_script:
 script:
   - |
       make
-      make test ARGS=-V
+      make check
 
 after_success:
   - |
