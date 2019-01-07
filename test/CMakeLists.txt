@@ -1,5 +1,8 @@
-ADD_EXECUTABLE(test_calc test_calc.cpp)
+ADD_EXECUTABLE(test_calc EXCLUDE_FROM_ALL test_calc.cpp)
 
 TARGET_LINK_LIBRARIES(test_calc calc)
 
+SET(CMAKE_CTEST_COMMAND ctest -V)
+
 ADD_TEST(all_test ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/test_calc)
+ADD_CUSTOM_TARGET(check COMMAND ${CMAKE_CTEST_COMMAND} DEPENDS test_calc)
