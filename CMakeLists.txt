@@ -74,25 +74,32 @@ ELSE()
   MESSAGE(STATUS "Current build type ${CMAKE_BUILD_TYPE}")
 ENDIF()
 
-if (NOT MSVC AND (COVERAGE) AND CMAKE_BUILD_TYPE STREQUAL "Debug" AND NOT CMAKE_CXX_COMPILER MATCHES "clang")
+IF (NOT MSVC AND (COVERAGE) AND CMAKE_BUILD_TYPE STREQUAL "Debug" AND NOT CMAKE_CXX_COMPILER MATCHES "clang")
+
   MESSAGE(STATUS "coverage for compiler ${CMAKE_CXX_COMPILER}")
 
-  SET(GCOV_BINARY "gcov" CACHE STRING "gcov binary")
+#  SET(GCOV_BINARY "gcov" CACHE STRING "gcov binary")
 
   MESSAGE(STATUS "gcov binary: ${GCOV_BINARY}")
 
-  INCLUDE(CodeCoverage)
+  INCLUDE(CodeCoverageNew)
   MESSAGE(STATUS "will generate coverage data")
-  SET(CMAKE_BUILD_TYPE "Debug")
+#  SET(CMAKE_BUILD_TYPE "Debug")
+  APPEND_COVERAGE_COMPILER_FLAGS()
   SET(GCOV_ADDITIONAL_FLAGS "-fprofile-arcs -ftest-coverage")
-  SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GCOV_ADDITIONAL_FLAGS}")
-  SET(CMAKE_C_FLAGS "{CMAKE_C_FLAGS} ${GCOV_ADDITIONAL_FLAGS}")
+#  SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GCOV_ADDITIONAL_FLAGS}")
+#  SET(CMAKE_C_FLAGS "{CMAKE_C_FLAGS} ${GCOV_ADDITIONAL_FLAGS}")
   SET(CMAKE_EXE_LINKER_FLAGS "${GCOV_ADDITIONAL_FLAGS}")
 
-  SETUP_TARGET_FOR_COVERAGE(coverage test_calc src coverage)
-else()
+  SETUP_TARGET_FOR_COVERAGE_LCOV(
+    NAME coverage
+    EXECUTABLE ctest -V
+    DEPENDENCIES test_calc
+  )
+#  SETUP_TARGET_FOR_COVERAGE(coverage test_calc src coverage)
+ELSE()
   MESSAGE(STATUS "no coverage for compiler ${CMAKE_CXX_COMPILER}")
-endif()
+ENDIF()
 
 # Put the libaries and binaries that get built into directories at the
 # top of the build tree rather than in hard-to-find leaf
