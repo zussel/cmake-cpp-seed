@@ -26,10 +26,10 @@ before_build:
   - cmake -G "%VS_VERSION%" -DCMAKE_BUILD_TYPE=%configuration% ..
 
 build_script:
-  - cmake --build . --config %configuration%
+  - cmake --build . --config %configuration% --target check
 
 test_script:
-  - make check
+  - ctest --verbose
 
 after_build:
   - ps: |
