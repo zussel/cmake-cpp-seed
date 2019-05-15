@@ -189,39 +189,39 @@ matrix:
 #      addons: *gcc49-64
 #
     # gcc-5 32
-    - env: GCC_VERSION=5 BUILD_TYPE=Debug ARCH=32
-      os: linux
-      addons: &gcc5-32
-        apt:
-          packages:
-            - cmake
-            - cmake-data
-            - linux-libc-dev:i386
-            - g++-5-multilib
-            - gcc-5-multilib
-          sources:
-            - george-edison55-precise-backports
-            - ubuntu-toolchain-r-test
-    - env: GCC_VERSION=5 BUILD_TYPE=Release ARCH=32
-      os: linux
-      addons: *gcc5-32
+    # - env: GCC_VERSION=5 BUILD_TYPE=Debug ARCH=32
+    #   os: linux
+    #   addons: &gcc5-32
+    #     apt:
+    #       packages:
+    #         - cmake
+    #         - cmake-data
+    #         - linux-libc-dev:i386
+    #         - g++-5-multilib
+    #         - gcc-5-multilib
+    #       sources:
+    #         - george-edison55-precise-backports
+    #         - ubuntu-toolchain-r-test
+    # - env: GCC_VERSION=5 BUILD_TYPE=Release ARCH=32
+    #   os: linux
+    #   addons: *gcc5-32
 
-    # gcc-5 64
-    - env: GCC_VERSION=5 BUILD_TYPE=Debug ARCH=64
-      os: linux
-      addons: &gcc5-64
-        apt:
-          packages:
-            - cmake
-            - cmake-data
-            - g++-5
-            - gcc-5
-          sources:
-            - george-edison55-precise-backports
-            - ubuntu-toolchain-r-test
-    - env: GCC_VERSION=5 BUILD_TYPE=Release ARCH=64
-      os: linux
-      addons: *gcc5-64
+    # # gcc-5 64
+    # - env: GCC_VERSION=5 BUILD_TYPE=Debug ARCH=64
+    #   os: linux
+    #   addons: &gcc5-64
+    #     apt:
+    #       packages:
+    #         - cmake
+    #         - cmake-data
+    #         - g++-5
+    #         - gcc-5
+    #       sources:
+    #         - george-edison55-precise-backports
+    #         - ubuntu-toolchain-r-test
+    # - env: GCC_VERSION=5 BUILD_TYPE=Release ARCH=64
+    #   os: linux
+    #   addons: *gcc5-64
 
     # gcc-6 32
     - env: GCC_VERSION=6 BUILD_TYPE=Debug ARCH=32
@@ -330,7 +330,8 @@ before_deploy:
 
 deploy:
   provider: releases
-  api_key: ${GITHUB_TOKEN}
+  api_key:
+    secure: "tcYHoQKYGE2//w4xTdPLnZDcwahb9GAnrHDGr3NXWf/ygYRb8uwncthLcBA1nV0TTwI7mOe70Ylr6ZpRopuqNCsamBQUTs3Doc8PNdkkZPRhJRdfU9Tuf2RdONOF+yIBuKaH8RrLcFOL7ZZtwmzKMFLwAYwOUt7Y9YA/OWqAKm2RAyE4xHAb5pFJ1qsdK5Md4bnAFhehYSqOlkHTziE/AAnWBxt5FTNvPumZy2eIl6NlRiJZLYz4h6jvcCswiO/sgGKTekXIa6lX9+dPg1PATBORRaJknETARreK0pg9u9giF98ewAAhtE4d1a/WMV03XGiecQ/EBideHTOwKtLnrRLZAlO5M/daQHHmd1szHivwerEJOX0MdFbSYlOS565nUJInOE3xYWxk4axqlKrB3QDdYglPqX0jF2pDxmueh1fkHquea2YPkzRIKbjYDAALp67AdXC6Ujwi5QaV+7d5vuWLbmlpXfROAbRku+4t2U1+7XdKs+5QL6p8UqmaJFmyjziAGFy2wVbq4/yaOg0h5nBBIHmPMwywO310I5dSXEmErdN3Wx93nf+V6rzFC5IiwnNHIna54gqIp5AZRrumG+76cJHE/Xn4QPGdpu6Hg0pvMurFoH0xI9bpK+eID2HALrq7knpDFXckcyNWfINANuD++qyCXLfDn+qKxRu9ujc="
   file:
     - "${RELEASE_TGZ_FILE}"
     - "${RELEASE_DEB_FILE}"
